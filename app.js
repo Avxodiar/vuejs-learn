@@ -51,6 +51,9 @@ const App = {
      */
     countTask() {
       return this.todoList.length;
+    },
+    progress() {
+      return parseInt(this.inputValue.length / this.inputMaxLen * 100);
     }
   },
   watch: {

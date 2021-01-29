@@ -19,6 +19,7 @@
          v-model="inputValue"
          @keypress.enter="addTask"
         />
+        <div class="progress" :style="{width: progress + '%'}"></div>
         <small v-if="inputValue.length === inputMaxLen">Название задачи должно быть не более {{ inputMaxLen }} cимволов</small>
       </div>
       <div>
