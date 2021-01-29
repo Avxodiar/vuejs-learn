@@ -9,6 +9,18 @@ const App = {
       todoList: ['Составить план', 'Добавить 2 задачи']
     }
   },
+  /**
+   * Загрузка списка задач из LocalStorage
+   */
+  mounted() {
+    if (localStorage.getItem('todoList')) {
+      try {
+        this.todoList = JSON.parse(localStorage.getItem('todoList'));
+      } catch(e) {
+        localStorage.removeItem('todoList');
+      }
+    }
+  },
   methods: {
     /**
      * Добавление задачи по нажатию Enter в поле ввода
@@ -19,6 +31,13 @@ const App = {
       }
     },
     /**
+     * Сохранение списка задач в LocalStorage
+     */
+    saveTask() {
+      const parsed = JSON.stringify(this.todoList);
+      localStorage.setItem('todoList', parsed);
+    },
+    /**
      * Добавление задачи в список
      */
     addTask() {
@@ -26,6 +45,7 @@ const App = {
       if (task != '') {
         this.todoList.push(task)
         this.inputValue = ''
+        this.saveTask()
       }
     },
     /**
@@ -34,6 +54,7 @@ const App = {
      */
     deleteTask(id) {
       this.todoList.splice(id, 1);
+      this.saveTask()
     },
     /**
      * Поднять задачу в списке
@@ -42,6 +63,7 @@ const App = {
     upTask(id) {
       if (id > 0) {
         [ this.todoList[id-1], this.todoList[id] ] = [ this.todoList[id], this.todoList[id-1] ];
+        this.saveTask()
       }
     },
     /**
@@ -51,6 +73,7 @@ const App = {
     downTask(id) {
       if (id < this.todoList.length - 1) {
         [ this.todoList[id+1], this.todoList[id] ] = [ this.todoList[id], this.todoList[id+1] ];
+        this.saveTask()
       }
     },
     /**
@@ -70,6 +93,10 @@ const App = {
     countTask() {
       return this.todoList.length;
     },
+    /**
+     * Процентное отношение заполнености введеного текста
+     * по отношению к макс. допустимой длине названия задачи
+     */
     progress() {
       return parseInt(this.inputValue.length / this.inputMaxLen * 100);
     }

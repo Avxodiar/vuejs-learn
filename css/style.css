@@ -403,9 +403,17 @@ h3 {
 }
 
 .progress {
-  height: 5px;
-  background-color: #ccc;
-  height: 5px;
-  color: gray;
-  margin-top: 5px;
+    height: 5px;
+    background-color: #ccc;
+    height: 5px;
+    color: gray;
+    margin-top: 5px;
+}
+
+.note {
+    font-size: 1em;
+    margin-bottom: 2em;
+    color: darkcyan;
+    font-weight: bold;
+    font-style: italic;
 }
