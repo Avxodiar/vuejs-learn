@@ -36,6 +36,24 @@ const App = {
       this.todoList.splice(id, 1);
     },
     /**
+     * Поднять задачу в списке
+     * @param  int id
+     */
+    upTask(id) {
+      if (id > 0) {
+        [ this.todoList[id-1], this.todoList[id] ] = [ this.todoList[id], this.todoList[id-1] ];
+      }
+    },
+    /**
+     * Понизить задачу в списке
+     * @param  int id
+     */
+    downTask(id) {
+      if (id < this.todoList.length - 1) {
+        [ this.todoList[id+1], this.todoList[id] ] = [ this.todoList[id], this.todoList[id+1] ];
+      }
+    },
+    /**
      * Первый символ строки с большой буквы
      * @param  string str
      * @return string

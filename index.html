@@ -30,7 +30,11 @@
       <ul class="list" v-if="todoList.length !== 0">
         <li class="list-item" v-for="(task, id) in todoList">
           {{ id + 1 }}. {{ ucFirst(task) }}
-          <button class="btn danger" @click="deleteTask(id)">Удалить</button>
+          <div>
+            <button class="btn" @click="upTask(id)" :disabled="id == 0">Вверх</button>
+            <button class="btn" @click="downTask(id)" :disabled="id == (todoList.length - 1)">Вниз</button>
+            <button class="btn danger" @click="deleteTask(id)">Удалить</button>
+          </div>
         </li>
       </ul>
       <p class="warning" v-else>Список задач пуст</p>
