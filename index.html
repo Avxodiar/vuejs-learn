@@ -8,14 +8,36 @@
 </head>
 <body>
 
+  <h1 class="ghostwhite">Знакомство с Vue.js</h1>
   <div class="container pt-5" id="app">
+
     <div class="card center">
-      <h1>Знакомство с Vue.js</h1>
-      <p class="counter">Cчетчик: {{ counter }}</p>
+      <h2>Cчетчик: {{ counter }}</h2>
       <div>
         <button class="btn primary" v-on:click="counter++">+</button>
         <button class="btn danger" v-on:click="counter--">-</button>
       </div>
+    </div>
+
+    <div class="card">
+      <h2>{{ title }}</h2>
+      <div class="form-control">
+        <input type="text"
+         v-bind:placeholder="titleString"
+         v-bind:value="inputValue"
+         v-on:input="inputChangeHandler"
+        >
+      </div>
+      <div class="d-flex">
+        <p>Задача: {{ inputValue }}</p>
+        <button class="btn" v-on:click="addTask">Добавить</button>
+      </div>
+      <hr>
+      <ul class="list">
+        <li class="list-item" v-for="task in todoList">
+          {{ task }}
+        </li>
+      </ul>
     </div>
   </div>
   
