@@ -48,6 +48,14 @@ const App = {
     ucFirst(str) {
       if (!str) return str;
       return str[0].toUpperCase() + str.slice(1);;
+    },
+  },
+  computed: {
+    /**
+     * Количество задач в списке
+     */
+    countTask() {
+      return this.todoList.length;
     }
   }
 }
