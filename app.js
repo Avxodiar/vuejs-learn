@@ -11,12 +11,6 @@ const App = {
   },
   methods: {
     /**
-     * Значение поля ввода
-     */
-    inputChangeHandler(evt) {
-      this.inputValue = evt.target.value
-    },
-    /**
      * Добавление задачи по нажатию Enter в поле ввода
      */
     inputPressEnter(evt) {

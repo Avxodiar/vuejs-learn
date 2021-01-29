@@ -16,8 +16,7 @@
       <div class="form-control">
         <input type="text"
          :placeholder="titleString"
-         :value="inputValue"
-         @input="inputChangeHandler"
+         v-model="inputValue"
          @keypress.enter="addTask"
         />
         <small v-if="inputValue.length === inputMaxLen">Название задачи должно быть не более {{ inputMaxLen }} cимволов</small>
