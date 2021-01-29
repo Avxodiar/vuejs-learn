@@ -11,14 +11,6 @@
   <h1 class="ghostwhite">Знакомство с Vue.js</h1>
   <div class="container pt-5" id="app">
 
-    <div class="card center">
-      <h2>Cчетчик: {{ counter }}</h2>
-      <div>
-        <button class="btn primary" v-on:click="counter++">+</button>
-        <button class="btn danger" v-on:click="counter--">-</button>
-      </div>
-    </div>
-
     <div class="card">
       <h2>{{ title }}</h2>
       <div class="form-control">
@@ -47,6 +39,15 @@
       </ul>
       <p class="warning" v-else>Список задач пуст</p>
     </div>
+
+    <div class="card center">
+      <h2>Cчетчик: {{ counter }}</h2>
+      <div>
+        <button class="btn primary" v-on:click="counter++">+</button>
+        <button class="btn danger" v-on:click="counter--">-</button>
+      </div>
+    </div>
+
   </div>
   
   <script src="https://unpkg.com/vue@next"></script>
