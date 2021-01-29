@@ -13,8 +13,8 @@
       <h1>Знакомство с Vue.js</h1>
       <p class="counter">Cчетчик: {{ counter }}</p>
       <div>
-        <button class="btn primary">+</button>
-        <button class="btn danger">-</button>
+        <button class="btn primary" v-on:click="counter++">+</button>
+        <button class="btn danger" v-on:click="counter--">-</button>
       </div>
     </div>
   </div>
