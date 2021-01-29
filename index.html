@@ -36,7 +36,7 @@
       <hr>
       <ul class="list" v-if="todoList.length !== 0">
         <li class="list-item" v-for="(task, id) in todoList">
-          {{ id + 1 }}. {{ task }}
+          {{ id + 1 }}. {{ ucFirst(task) }}
           <button
             class="btn danger"
             v-on:click="deleteTask(id)"
