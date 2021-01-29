@@ -34,7 +34,7 @@
         <button class="btn" v-on:click="addTask">Добавить</button>
       </div>
       <hr>
-      <ul class="list">
+      <ul class="list" v-if="todoList.length !== 0">
         <li class="list-item" v-for="(task, id) in todoList">
           {{ id + 1 }}. {{ task }}
           <button
@@ -45,6 +45,7 @@
           </button>
         </li>
       </ul>
+      <p class="warning" v-else>Список задач пуст</p>
     </div>
   </div>
   
