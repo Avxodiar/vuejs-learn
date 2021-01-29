@@ -12,6 +12,11 @@ const App = {
     inputChangeHandler(evt) {
       this.inputValue = evt.target.value
     },
+    inputPressEnter(evt) {
+      if (evt.key === 'Enter') {
+        this.addTask();
+      }
+    },
     addTask() {
       let task = this.inputValue;
       if (task != '') {
