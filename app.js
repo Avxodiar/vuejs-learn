@@ -23,6 +23,9 @@ const App = {
         this.todoList.push(task)
         this.inputValue = ''
       }
+    },
+    deleteTask(id) {
+      this.todoList.splice(id, 1);
     }
   }
 }

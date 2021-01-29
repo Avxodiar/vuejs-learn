@@ -29,14 +29,20 @@
          v-on:keypress.enter="addTask"
         >
       </div>
-      <div class="d-flex">
+      <div>
         <p>Задача: {{ inputValue }}</p>
         <button class="btn" v-on:click="addTask">Добавить</button>
       </div>
       <hr>
       <ul class="list">
-        <li class="list-item" v-for="task in todoList">
-          {{ task }}
+        <li class="list-item" v-for="(task, id) in todoList">
+          {{ id + 1 }}. {{ task }}
+          <button
+            class="btn danger"
+            v-on:click="deleteTask(id)"
+          />
+            Удалить
+          </button>
         </li>
       </ul>
     </div>
