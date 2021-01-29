@@ -15,26 +15,21 @@
       <h2>{{ title }}</h2>
       <div class="form-control">
         <input type="text"
-         v-bind:placeholder="titleString"
-         v-bind:value="inputValue"
-         v-on:input="inputChangeHandler"
-         v-on:keypress.enter="addTask"
+         :placeholder="titleString"
+         :value="inputValue"
+         @input="inputChangeHandler"
+         @keypress.enter="addTask"
         >
       </div>
       <div>
-        <p>Задача: {{ inputValue }}</p>
-        <button class="btn" v-on:click="addTask">Добавить</button>
+        <p>Задача: {{ ucFirst(inputValue) }}</p>
+        <button class="btn" @click="addTask">Добавить</button>
       </div>
       <hr>
       <ul class="list" v-if="todoList.length !== 0">
         <li class="list-item" v-for="(task, id) in todoList">
           {{ id + 1 }}. {{ ucFirst(task) }}
-          <button
-            class="btn danger"
-            v-on:click="deleteTask(id)"
-          />
-            Удалить
-          </button>
+          <button class="btn danger" @click="deleteTask(id)">Удалить</button>
         </li>
       </ul>
       <p class="warning" v-else>Список задач пуст</p>
@@ -43,8 +38,8 @@
     <div class="card center">
       <h2>Cчетчик: {{ counter }}</h2>
       <div>
-        <button class="btn primary" v-on:click="counter++">+</button>
-        <button class="btn danger" v-on:click="counter--">-</button>
+        <button class="btn primary" @click="counter++">+</button>
+        <button class="btn danger" @click="counter--">-</button>
       </div>
     </div>
 
