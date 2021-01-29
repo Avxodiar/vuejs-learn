@@ -19,7 +19,8 @@
          :value="inputValue"
          @input="inputChangeHandler"
          @keypress.enter="addTask"
-        >
+        />
+        <small v-if="inputValue.length === inputMaxLen">Название задачи должно быть не более {{ inputMaxLen }} cимволов</small>
       </div>
       <div>
         <p>Задача: {{ ucFirst(inputValue) }}</p>

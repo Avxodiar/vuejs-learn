@@ -5,6 +5,7 @@ const App = {
       title: 'ToDO List',
       titleString: 'Опишите задачу',
       inputValue: '',
+      inputMaxLen: 64,
       todoList: ['Составить план', 'Добавить 2 задачи']
     }
   },
@@ -56,6 +57,16 @@ const App = {
      */
     countTask() {
       return this.todoList.length;
+    }
+  },
+  watch: {
+    /**
+     * Ограничение длины названия задачи
+     */
+    inputValue(value) {
+      if (value.length > this.inputMaxLen) {
+        this.inputValue = value.substr(0,this.inputMaxLen);
+      }
     }
   }
 }
