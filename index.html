@@ -26,7 +26,7 @@
          v-bind:placeholder="titleString"
          v-bind:value="inputValue"
          v-on:input="inputChangeHandler"
-         v-on:keypress="inputPressEnter"
+         v-on:keypress.enter="addTask"
         >
       </div>
       <div class="d-flex">
