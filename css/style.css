@@ -430,3 +430,10 @@ h3 {
 .radio-app label {
     margin-right: 2em;
 }
+
+.card fieldset {
+    margin: 2em 0 1em;
+    padding: 1em;
+    border-radius: 10px;
+    border-color: rgba(0, 0, 0, 0.15);
+}

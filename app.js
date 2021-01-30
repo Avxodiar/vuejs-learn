@@ -7,7 +7,8 @@ const App = {
       titleString: 'Опишите задачу',
       inputValue: '',
       inputMaxLen: 64,
-      todoList: ['Составить план', 'Добавить 2 задачи']
+      todoList: ['Составить план', 'Добавить 2 задачи'],
+      search: ''
     }
   },
   /**
@@ -88,6 +89,20 @@ const App = {
     },
   },
   computed: {
+    /**
+     * Фильтрация списка задач по введенной строке поиска
+     * @returns {any}
+     */
+    filteredList() {
+        const strSearch = this.search.toLocaleLowerCase();
+        if (strSearch === '') {
+            return this.todoList;
+        }
+
+        return this.todoList.filter(function (item) {
+            return item.toLocaleLowerCase().indexOf(strSearch) > -1;
+        });
+    },
     /**
      * Количество задач в списке
      */

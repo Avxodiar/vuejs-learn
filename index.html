@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <div class="container pt-5" id="app" v-cloak>
+  <div class="container" id="app" v-cloak>
     <h1 class="ghostwhite">Знакомство с Vue.js</h1>
 
     <div class="card radio-app">
@@ -35,26 +35,37 @@
     <div class="card" v-show="radio == 'todo'">
       <h2>{{ title }} (Задач: {{ countTask }})</h2>
       <p class="note">Данные хранятся в памяти браузера! (LocalStorage)</p>
+
       <div class="form-control">
         <input type="text"
-         :placeholder="titleString"
-         v-model="inputValue"
-         @keypress.enter="addTask"
+          placeholder="Поиск по имени задачи"
+          v-model="search"
+          @keypress="filter"
         />
-        <div class="progress" :style="{width: progress + '%'}"></div>
-        <small v-if="inputValue.length === inputMaxLen">Название задачи должно быть не более {{ inputMaxLen }} cимволов</small>
       </div>
-      <div>
-        <p>Задача: {{ ucFirst(inputValue) }}</p>
-        <button class="btn" @click="addTask">Добавить</button>
-      </div>
-      <hr>
-      <ul class="list" v-if="todoList.length">
-        <li class="list-item" v-for="(task, id) in todoList">
+      <fieldset>
+        <legend>Добавление задачи</legend>
+        <div class="form-control">
+          <input type="text"
+             :placeholder="titleString"
+             v-model="inputValue"
+             @keypress.enter="addTask"
+          />
+          <div class="progress" :style="{width: progress + '%'}"></div>
+          <small v-if="inputValue.length === inputMaxLen">Название задачи должно быть не более {{ inputMaxLen }} cимволов</small>
+        </div>
+        <div>
+          <p>Задача: {{ ucFirst(inputValue) }}</p>
+          <button class="btn" @click="addTask">Добавить</button>
+        </div>
+      </fieldset>
+
+      <ul class="list" v-if="filteredList.length">
+        <li class="list-item" v-for="(task, id) in filteredList">
           {{ id + 1 }}. {{ ucFirst(task) }}
           <div>
             <button class="btn" @click="upTask(id)" :disabled="id == 0">Вверх</button>
-            <button class="btn" @click="downTask(id)" :disabled="id == (todoList.length - 1)">Вниз</button>
+            <button class="btn" @click="downTask(id)" :disabled="id == (filteredList.length - 1)">Вниз</button>
             <button class="btn danger" @click="deleteTask(id)">Удалить</button>
           </div>
         </li>
