@@ -1,6 +1,7 @@
 const App = {
   data() {
     return {
+      radio: 'todo',
       counter: 0,
       title: 'ToDO List',
       titleString: 'Опишите задачу',
@@ -42,15 +43,15 @@ const App = {
      */
     addTask() {
       let task = this.inputValue;
-      if (task != '') {
-        this.todoList.push(task)
-        this.inputValue = ''
+      if (task !== '') {
+        this.todoList.push(task);
+        this.inputValue = '';
         this.saveTask()
       }
     },
     /**
      * Удаление задачи из списка
-     * @param  int id - номер задачи
+     * @param id - номер задачи
      */
     deleteTask(id) {
       this.todoList.splice(id, 1);
@@ -58,7 +59,7 @@ const App = {
     },
     /**
      * Поднять задачу в списке
-     * @param  int id
+     * @param  id
      */
     upTask(id) {
       if (id > 0) {
@@ -68,7 +69,7 @@ const App = {
     },
     /**
      * Понизить задачу в списке
-     * @param  int id
+     * @param  id
      */
     downTask(id) {
       if (id < this.todoList.length - 1) {
@@ -78,12 +79,12 @@ const App = {
     },
     /**
      * Первый символ строки с большой буквы
-     * @param  string str
-     * @return string
+     * @param  str
+     * @return {string}
      */
     ucFirst(str) {
       if (!str) return str;
-      return str[0].toUpperCase() + str.slice(1);;
+      return str[0].toUpperCase() + str.slice(1);
     },
   },
   computed: {
@@ -96,6 +97,7 @@ const App = {
     /**
      * Процентное отношение заполнености введеного текста
      * по отношению к макс. допустимой длине названия задачи
+     * @returns {number}
      */
     progress() {
       return parseInt(this.inputValue.length / this.inputMaxLen * 100);
@@ -111,7 +113,6 @@ const App = {
       }
     }
   }
-}
+};
 
-const app = Vue.createApp(App)
-app.mount('#app')
+Vue.createApp(App).mount('#app');
