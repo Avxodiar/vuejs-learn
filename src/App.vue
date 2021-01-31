@@ -25,7 +25,26 @@
         components: {
             TodoList
         },
+        /**
+         * Загрузка списка задач из LocalStorage
+         */
+        mounted() {
+            if (localStorage.getItem('todoList')) {
+                try {
+                    this.todoList = JSON.parse(localStorage.getItem('todoList'));
+                } catch(e) {
+                    localStorage.removeItem('todoList');
+                }
+            }
+        },
         methods: {
+            /**
+             * Сохранение списка задач в LocalStorage
+             */
+            saveTask() {
+                const parsed = JSON.stringify(this.todoList);
+                localStorage.setItem('todoList', parsed);
+            },
             /**
              * Поднять задачу в списке
              * @param  id
@@ -33,7 +52,7 @@
             upTodo(id) {
                 if (id > 0) {
                     [ this.todoList[id-1], this.todoList[id] ] = [ this.todoList[id], this.todoList[id-1] ];
-                    /*this.saveTask()*/
+                    this.saveTask()
                 }
             },
             /**
@@ -43,7 +62,7 @@
             downTodo(id) {
                 if (id < this.todoList.length - 1) {
                     [ this.todoList[id+1], this.todoList[id] ] = [ this.todoList[id], this.todoList[id+1] ];
-                    /*this.saveTask()*/
+                    this.saveTask()
                 }
             },
             /**
@@ -52,7 +71,7 @@
             addTodo(value) {
                 if (value !== '') {
                     this.todoList.push(value);
-                    /*this.saveTask()*/
+                    this.saveTask()
                 }
             },
             /**
@@ -61,6 +80,7 @@
              */
             deleteTodo(id) {
                 this.todoList.splice(id, 1);
+                this.saveTask()
             },
             /**
              * Фильтрация списка задач по введенной строке поиска
