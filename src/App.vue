@@ -1,10 +1,13 @@
 <template>
     <TodoList class="card"
-        :todoList="todoList"
+        :list="filteredList"
+        :countTodo="todoList.length"
+        :filter="filter"
         @up-todo="upTodo"
         @down-todo="downTodo"
         @add-todo="addTodo"
         @delete-todo="deleteTodo"
+        @filter="filterTodo"
     />
 </template>
 
@@ -16,6 +19,7 @@
         data() {
             return {
                 todoList: ['Составить план', 'Добавить 2 задачи', 'Проверка'],
+                filter: ''
             }
         },
         components: {
@@ -57,6 +61,26 @@
              */
             deleteTodo(id) {
                 this.todoList.splice(id, 1);
+            },
+            /**
+             * Фильтрация списка задач по введенной строке поиска
+             * @returns {string}
+             */
+            filterTodo(value) {
+                this.filter = value.trim().toLocaleLowerCase();
+            }
+        },
+        computed: {
+            /**
+             * Фильтрация списка задач по введенной строке поиска
+             * @returns {any}
+             */
+            filteredList() {
+                if (this.filter === '') {
+                    return this.todoList;
+                }
+
+                return this.todoList.filter(item => item.toLocaleLowerCase().indexOf(this.filter) > -1 );
             }
         }
     }

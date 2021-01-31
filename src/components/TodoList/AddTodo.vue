@@ -112,6 +112,12 @@
         margin: 0;
     }
 
+    .form-control input:active,
+    .form-control input:focus {
+        transition: border 0.22s;
+        border: 2px solid #42b983;
+    }
+
     .progress {
         margin-top: 5px;
         height: 5px;
