@@ -3,6 +3,8 @@
         <h2>Todo List (Задач: {{ todoList.length }})</h2>
         <p class="note">Данные хранятся в памяти браузера! (LocalStorage)</p>
 
+        <AddTodo @add-todo="addTodo"/>
+
         <ul class="list" v-if="todoList.length">
             <TodoItem
                 v-for="(todo, id) in todoList"
@@ -17,12 +19,14 @@
 </template>
 
 <script>
+    import AddTodo from '@/components/TodoList/AddTodo'
     import TodoItem from '@/components/TodoList/TodoItem'
 
     export default {
         name: "TodoList",
         props: ['todoList'],
         components: {
+            AddTodo,
             TodoItem
         },
         methods: {
@@ -31,6 +35,9 @@
             },
             downTodo(id) {
                 this.$emit('down-todo', id);
+            },
+            addTodo(value) {
+                this.$emit('add-todo', value);
             },
             deleteTodo(id) {
                 this.$emit('delete-todo', id);

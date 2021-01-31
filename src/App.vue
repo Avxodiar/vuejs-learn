@@ -3,6 +3,7 @@
         :todoList="todoList"
         @up-todo="upTodo"
         @down-todo="downTodo"
+        @add-todo="addTodo"
         @delete-todo="deleteTodo"
     />
 </template>
@@ -38,6 +39,15 @@
             downTodo(id) {
                 if (id < this.todoList.length - 1) {
                     [ this.todoList[id+1], this.todoList[id] ] = [ this.todoList[id], this.todoList[id+1] ];
+                    /*this.saveTask()*/
+                }
+            },
+            /**
+             * Добавление задачи в список
+             */
+            addTodo(value) {
+                if (value !== '') {
+                    this.todoList.push(value);
                     /*this.saveTask()*/
                 }
             },
@@ -104,4 +114,63 @@
         align-items: center;
     }
 
+    .btn {
+        color: #42b983;
+        position: relative;
+        place-content: center;
+        place-items: center;
+        width: fit-content;
+        border-radius: 99px;
+        letter-spacing: 0.05em;
+        border: 1px solid #42b983;
+        text-decoration: none;
+        text-transform: uppercase;
+        margin-right: 10px;
+        padding: 0.5rem 1.5rem;
+        white-space: nowrap;
+        font-weight: 700;
+        outline: none;
+        background: #fff;
+        transition: all 0.22s;
+    }
+
+    .btn:hover {
+        cursor: pointer;
+        opacity: 0.8;
+    }
+
+    .btn:disabled {
+        cursor: not-allowed;
+        opacity: 1!important;
+        background: #eee!important;
+        border-color: #ddd!important;
+        color: #999!important;
+    }
+
+    .btn:active {
+        box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn.danger {
+        background: #e53935;
+        color: #fff;
+        border-color: #e53935;
+    }
+
+    .visually-hidden:not(:focus):not(:active),
+    input[type="checkbox"].visually-hidden,
+    input[type="radio"].visually-hidden {
+        position:absolute;
+
+        width:1px;
+        height:1px;
+        margin:-1px;
+        border:0;
+        padding: 0;
+
+        white-space: nowrap;
+        clip-path: inset(100%);
+        clip:rect(0 0 0 0);
+        overflow:hidden;
+    }
 </style>
