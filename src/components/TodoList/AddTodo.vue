@@ -46,7 +46,7 @@
              * @returns {number}
              */
             progress() {
-                return parseInt(this.newTodo.length / this.inputMaxLen * 100);
+                return Math.round(this.newTodo.length / this.inputMaxLen * 100);
             }
         },
         methods: {

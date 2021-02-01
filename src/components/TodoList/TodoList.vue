@@ -9,7 +9,7 @@
         <p class="task" v-if="filter.length">
             Поиск по запросу «<span>{{ filter }}</span>»: найдено {{ list.length }} {{ taskWord }}
         </p>
-        <p class="task" v-else>Всего задач: {{ countTodo }}</p>
+        <p class="task" v-else>Всего задач: {{ countTodo }} (выполнено  {{ compleated }}%)</p>
 
         <ul class="list" v-if="list.length">
             <TodoItem
@@ -62,6 +62,14 @@
         computed: {
             taskWord() {
                 return numeralWord(this.list.length, 'задача','задачи','задач')
+            },
+
+            compleated() {
+                if (this.countTodo === 0 ) {
+                    return 100;
+                }
+                let checked = this.list.reduce((sum, todo) => sum + todo.checked, 0);
+                return Math.round( 100 * checked / this.countTodo );
             }
         }
     }
