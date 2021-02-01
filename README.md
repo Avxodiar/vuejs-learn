@@ -1,5 +1,4 @@
-Знакомство с Vue.js
-#Todo List
+#Учебный проект 'Todo List' на Vue.js
 
 ### Project setup
 ```
