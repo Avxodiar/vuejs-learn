@@ -6,20 +6,8 @@ set -e
 # сборка
 npm run build
 
-# переход в каталог сборки
-cd dist
+# коммит сборки для production
+git add -f dist && git commit -m "Deploy dist subtree commit to GithubPages"
 
-# если вы публикуете на пользовательский домен
-# echo 'www.example.com' > CNAME
-
-git init
-git add -A
-git commit -m 'deploy'
-
-# если вы публикуете по адресу https://<USERNAME>.github.io
-# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
-
-# если вы публикуете по адресу https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:Avxodiar>/vuejs-learn.git main:gh-pages
-
-cd -
+# Деплоим subtree в ветку gh-pages
+git subtree push --prefix dist origin gh-pages
