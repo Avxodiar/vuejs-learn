@@ -8,6 +8,7 @@
         @add-todo="addTodo"
         @delete-todo="deleteTodo"
         @filter="filterTodo"
+        @todo-check="checkTodo"
     />
 </template>
 
@@ -18,7 +19,10 @@
         name: 'App',
         data() {
             return {
-                todoList: ['Составить план', 'Добавить 2 задачи', 'Проверка'],
+                todoList: [
+                    {title: 'Составить план', checked: false},
+                    {title: 'Добавить 2 задачи', checked: false}
+                ],
                 filter: ''
             }
         },
@@ -32,6 +36,12 @@
             if (localStorage.getItem('todoList')) {
                 try {
                     this.todoList = JSON.parse(localStorage.getItem('todoList'));
+
+                    /*this.todoList.forEach(elem => {
+                        this.todoList.push(
+                            {title: elem, checked: false}
+                        )
+                    });*/
                 } catch(e) {
                     localStorage.removeItem('todoList');
                 }
@@ -70,7 +80,8 @@
              */
             addTodo(value) {
                 if (value !== '') {
-                    this.todoList.push(value);
+                    const newTodo = {title: value, checked: false};
+                    this.todoList.push(newTodo);
                     this.saveTask()
                 }
             },
@@ -88,7 +99,14 @@
              */
             filterTodo(value) {
                 this.filter = value.trim().toLocaleLowerCase();
-            }
+            },
+            /**
+             * Установка флага о выполнении задачи
+             */
+            checkTodo(id) {
+                this.todoList[id].checked = !this.todoList[id].checked;
+                this.saveTask()
+            },
         },
         computed: {
             /**
@@ -100,7 +118,7 @@
                     return this.todoList;
                 }
 
-                return this.todoList.filter(item => item.toLocaleLowerCase().indexOf(this.filter) > -1 );
+                return this.todoList.filter(item => item.title.toLocaleLowerCase().indexOf(this.filter) > -1 );
             }
         }
     }

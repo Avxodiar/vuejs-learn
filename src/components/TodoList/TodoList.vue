@@ -18,6 +18,7 @@
                 @up-todo="upTodo"
                 @down-todo="downTodo"
                 @del-todo="deleteTodo"
+                @todo-check="checkTodo"
             />
         </ul>
     </div>
@@ -53,6 +54,9 @@
             },
             filterTodo(value) {
                 this.$emit('filter', value);
+            },
+            checkTodo(id) {
+                this.$emit('todo-check', id);
             }
         },
         computed: {

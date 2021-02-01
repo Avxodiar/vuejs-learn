@@ -1,6 +1,13 @@
 <template>
-    <li class="list-item">
-        {{ id + 1 }}. {{ todo }}
+    <li class="list-item" :class="{checked:todo.checked}">
+        <div>
+            <strong>{{ id + 1}}.</strong>
+            <input type="checkbox" :id="id"
+                   :checked="todo.checked"
+                   @change="$emit('todo-check', id)"
+            />
+            <label :for="id">{{ todo.title }}</label>
+        </div>
         <div>
             <button class="btn" @click="$emit('up-todo',id)" :disabled="id === 0">Вверх</button>
             <button class="btn" @click="$emit('down-todo',id)" :disabled="id >= maxId">Вниз</button>
@@ -27,9 +34,32 @@
         white-space: nowrap;
         overflow: hidden;
     }
-
-    .list-item:hover {
-        background: #eee;
+    .list-item:nth-child(even) {
+        background-color: #CFD8DC;
     }
 
+    .list-item:hover {
+        background: #87b1c0;
+    }
+
+    .checked {
+        color: gray;
+    }
+    .checked strong,
+    .checked label {
+        text-decoration: line-through;
+    }
+
+    strong {
+        margin: 0 1em;
+    }
+
+    label {
+        cursor: pointer;
+        padding: 1em;
+    }
+
+    [type=checkbox] {
+        cursor: pointer;
+    }
 </style>
