@@ -1,25 +1,32 @@
 <template>
     <li class="list-item" :class="{checked:todo.checked}">
         <div>
-            <strong>{{ id + 1}}.</strong>
-            <input type="checkbox" :id="id"
+            <strong>{{ id + 1 }}.</strong>
+            <input type="checkbox" :id="todo.id"
                    :checked="todo.checked"
-                   @change="$emit('todo-check', id)"
+                   @change="$emit('todo-check', todo.id)"
             />
-            <label :for="id">{{ todo.title }}</label>
+            <label :for="todo.id">{{ todoTitle }}</label>
         </div>
         <div class="todo-control">
-            <button class="btn" @click="$emit('up-todo',id)" :disabled="id === 0">Вверх</button>
-            <button class="btn" @click="$emit('down-todo',id)" :disabled="id >= maxId">Вниз</button>
-            <button class="btn danger" @click="$emit('del-todo', id)">Удалить</button>
+            <button class="btn" @click="$emit('up-todo',id)" :disabled="(id === 0 || search !== '')">Вверх</button>
+            <button class="btn" @click="$emit('down-todo',id)" :disabled="(id >= maxId || search !== '')">Вниз</button>
+            <button class="btn danger" @click="$emit('del-todo', todo.id)">Удалить</button>
         </div>
     </li>
 </template>
 
 <script>
+    import {ucFirst} from '@/assets/function.js'
+
     export default {
         name: "TodoItem",
-        props: ['todo', 'id', 'maxId']
+        props: ['todo', 'id', 'maxId', 'search'],
+        computed: {
+            todoTitle() {
+                return ucFirst(this.todo.title)
+            }
+        }
     }
 </script>
 

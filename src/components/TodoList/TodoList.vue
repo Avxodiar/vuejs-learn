@@ -9,12 +9,14 @@
         <p class="task" v-if="filter.length">
             Поиск по запросу «<span>{{ filter }}</span>»: найдено {{ list.length }} {{ taskWord }}
         </p>
-        <p class="task" v-else>Всего задач: {{ countTodo }} (выполнено  {{ compleated }}%)</p>
+        <p class="task" v-else>Всего задач: {{ countTodo }} (выполнено {{ completed }}%)</p>
 
         <ul class="list" v-if="list.length">
-            <TodoItem
+            <TodoItem :key="id"
                 v-for="(todo, id) in list"
-                :todo="todo" :id="id" :maxId="list.length - 1" :key="id"
+                :todo="todo" :id="id"
+                :maxId="list.length - 1"
+                :search="filter"
                 @up-todo="upTodo"
                 @down-todo="downTodo"
                 @del-todo="deleteTodo"
@@ -64,7 +66,7 @@
                 return numeralWord(this.list.length, 'задача','задачи','задач')
             },
 
-            compleated() {
+            completed() {
                 if (this.countTodo === 0 ) {
                     return 100;
                 }

@@ -1,3 +1,12 @@
+/**
+ * Исчисляемые формы слова
+ * пример: (count, 'слон', 'слона', 'слонов')
+ * @param count - количество
+ * @param form1 - первая форма ( 1 слон )
+ * @param form2 - вторая форма ( 2-4 слона )
+ * @param form5 - пятая форма ( 5-19 слонов )
+ * @returns {string}
+ */
 function numeralWord(count, form1, form2, form5) {
     let n = count % 100;
     let n1 = n % 10;
@@ -9,4 +18,14 @@ function numeralWord(count, form1, form2, form5) {
     return form5;
 }
 
-export {numeralWord}
+/**
+ * Делает первый символ заглавным
+ * @param value
+ * @returns {string}
+ */
+
+function ucFirst(value){
+    return value[0].toUpperCase() + value.slice(1);
+}
+
+export {numeralWord, ucFirst}

@@ -19,9 +19,11 @@
         name: 'App',
         data() {
             return {
+                maxId: 2,
                 todoList: [
-                    {title: 'Составить план', checked: false},
-                    {title: 'Добавить 2 задачи', checked: false}
+                    {title: 'Составить план', checked: false, id: 0},
+                    {title: 'Добавить 2 задачи', checked: false, id: 1},
+                    {title: 'Проверка', checked: false, id: 2}
                 ],
                 filter: ''
             }
@@ -36,12 +38,6 @@
             if (localStorage.getItem('todoList')) {
                 try {
                     this.todoList = JSON.parse(localStorage.getItem('todoList'));
-
-                    /*this.todoList.forEach(elem => {
-                        this.todoList.push(
-                            {title: elem, checked: false}
-                        )
-                    });*/
                 } catch(e) {
                     localStorage.removeItem('todoList');
                 }
@@ -80,7 +76,8 @@
              */
             addTodo(value) {
                 if (value !== '') {
-                    const newTodo = {title: value, checked: false};
+                    this.maxId++;
+                    const newTodo = {title: value, checked: false, id: this.maxId};
                     this.todoList.push(newTodo);
                     this.saveTask()
                 }
@@ -90,7 +87,7 @@
              * @param id - номер задачи
              */
             deleteTodo(id) {
-                this.todoList.splice(id, 1);
+                this.todoList = this.todoList.filter(item => item.id !== id );
                 this.saveTask()
             },
             /**
@@ -111,7 +108,7 @@
         computed: {
             /**
              * Фильтрация списка задач по введенной строке поиска
-             * @returns {any}
+             * @returns {array}
              */
             filteredList() {
                 if (this.filter === '') {
