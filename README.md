@@ -1,24 +1,40 @@
 #Учебный проект 'Todo List' на Vue.js
 
-### Project setup
+## Установка проекта
 ```
 npm install
 ```
 
-#### Compiles and hot-reloads for development
+## Запуск сервера для разработки
 ```
 npm run serve
 ```
 
-#### Compiles and minifies for production
+## Создание сборки для публикации
 ```
 npm run build
 ```
 
-#### Lints and fixes files
+## Проверка и исправление файлов
 ```
 npm run lint
 ```
 
-#### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Публикация / Deployment
+### Предпросмотр на localhost`е
+```
+npm run build
+
+npm install -g serve
+
+# флаг -s означает запуск serve в режиме одностраничного приложения (SPA)
+# который решает проблему маршрутизации, описанную в руководстве по Vue CLI
+# https://cli.vuejs.org/guide/deployment.html#routing-with-history-pushstate
+serve -s dist
+```
+### Публикация на сервер
+Смотрите [Руководства для платформ](https://cli.vuejs.org/guide/deployment.html#platform-guides).
+
+
+## Настройка конфигурации
+Смотрите [Руководство по настройке](https://cli.vuejs.org/config/).
