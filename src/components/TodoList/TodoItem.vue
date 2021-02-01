@@ -8,7 +8,7 @@
             />
             <label :for="id">{{ todo.title }}</label>
         </div>
-        <div>
+        <div class="todo-control">
             <button class="btn" @click="$emit('up-todo',id)" :disabled="id === 0">Вверх</button>
             <button class="btn" @click="$emit('down-todo',id)" :disabled="id >= maxId">Вниз</button>
             <button class="btn danger" @click="$emit('del-todo', id)">Удалить</button>
@@ -29,6 +29,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 0.5rem 0;
+        min-width: 940px;
         transition: .22s all;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -61,5 +62,10 @@
 
     [type=checkbox] {
         cursor: pointer;
+    }
+
+    .todo-control {
+        min-width: 350px;
+        text-align: right;
     }
 </style>
