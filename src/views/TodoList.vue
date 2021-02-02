@@ -1,5 +1,5 @@
 <template>
-    <TodoList class="card"
+    <List
         :list="filteredList"
         :countTodo="todoList.length"
         :countChecked="countChecked"
@@ -15,10 +15,10 @@
 </template>
 
 <script>
-    import TodoList from "@/components/TodoList/TodoList";
+    import List from "@/components/TodoList/List";
 
     export default {
-        name: 'App',
+        name: "TodoList",
         data() {
             return {
                 maxId: 2,
@@ -32,7 +32,7 @@
             }
         },
         components: {
-            TodoList
+            List
         },
         /**
          * Загрузка списка задач из LocalStorage

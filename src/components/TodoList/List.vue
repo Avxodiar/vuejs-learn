@@ -60,7 +60,7 @@
     import TodoItem from '@/components/TodoList/TodoItem'
 
     export default {
-        name: "TodoList",
+        name: "List",
         props: ['list', 'countTodo', 'countChecked', 'filter'],
         data () {
             return {
