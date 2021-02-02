@@ -10,6 +10,7 @@ body {
     color: #2c3e50;
     background: #2c3e50;
     min-width: 980px;
+    overflow-y: scroll;
 }
 
 h1 {
@@ -82,6 +83,8 @@ h3 {
 .btn:hover {
     cursor: pointer;
     opacity: 0.8;
+    color: #fff;
+    background: #42b983;
 }
 
 .btn:disabled {
@@ -97,9 +100,14 @@ h3 {
 }
 
 .btn.danger {
-    background: #e53935;
-    color: #fff;
+    color: #e53935;
     border-color: #e53935;
+    background: #fff;
+}
+
+.btn.danger:hover {
+    color: #fff;
+    background: #e53935;
 }
 
 .visually-hidden:not(:focus):not(:active),
