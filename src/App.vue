@@ -2,6 +2,7 @@
     <TodoList class="card"
         :list="filteredList"
         :countTodo="todoList.length"
+        :countChecked="countChecked"
         :filter="filter"
         @up-todo="upTodo"
         @down-todo="downTodo"
@@ -9,6 +10,7 @@
         @delete-todo="deleteTodo"
         @filter="filterTodo"
         @todo-check="checkTodo"
+        @select="selectTodo"
     />
 </template>
 
@@ -25,7 +27,8 @@
                     {title: 'Добавить 2 задачи', checked: false, id: 1},
                     {title: 'Проверка', checked: false, id: 2}
                 ],
-                filter: ''
+                filter: '',
+                radioSelector: 'all'
             }
         },
         components: {
@@ -38,6 +41,7 @@
             if (localStorage.getItem('todoList')) {
                 try {
                     this.todoList = JSON.parse(localStorage.getItem('todoList'));
+                    this.maxId = this.todoList.length;
                 } catch(e) {
                     localStorage.removeItem('todoList');
                 }
@@ -90,6 +94,9 @@
                 this.todoList = this.todoList.filter(item => item.id !== id );
                 this.saveTask()
             },
+            selectTodo(value) {
+                this.radioSelector = value;
+            },
             /**
              * Фильтрация списка задач по введенной строке поиска
              * @returns {string}
@@ -101,21 +108,47 @@
              * Установка флага о выполнении задачи
              */
             checkTodo(id) {
-                this.todoList[id].checked = !this.todoList[id].checked;
-                this.saveTask()
+                let todoId = this.todoList.findIndex(item => item.id === id);
+                if (todoId > -1) {
+                    this.todoList[todoId].checked = !this.todoList[todoId].checked;
+                    this.saveTask()
+                }
             },
         },
         computed: {
+            /**
+             * Кол-во выполненных задач
+             * @returns {int}
+             */
+            countChecked() {
+                return this.todoList.reduce((sum, todo) => sum + todo.checked, 0);
+            },
             /**
              * Фильтрация списка задач по введенной строке поиска
              * @returns {array}
              */
             filteredList() {
-                if (this.filter === '') {
+                if (this.filter === '' && this.radioSelector === 'all') {
                     return this.todoList;
                 }
 
-                return this.todoList.filter(item => item.title.toLocaleLowerCase().indexOf(this.filter) > -1 );
+                return this.todoList.filter(item => {
+
+                    let isCheked = item.checked && this.radioSelector === 'checked';
+                    let isUnCheked = !item.checked && this.radioSelector === 'unchecked';
+
+                    if (this.filter === '') {
+                        return isCheked || isUnCheked;
+                    }
+
+                    let isFiltered = item.title.toLocaleLowerCase().indexOf(this.filter) > -1;
+
+                    if (this.radioSelector === 'all') {
+                        return isFiltered;
+                    }
+
+                    return isFiltered && (isCheked || isUnCheked);
+                } );
             }
         }
     }

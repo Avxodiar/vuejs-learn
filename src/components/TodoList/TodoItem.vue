@@ -2,7 +2,7 @@
     <li class="list-item" :class="{checked:todo.checked}">
         <div>
             <strong>{{ id + 1 }}.</strong>
-            <input type="checkbox" :id="todo.id"
+            <input type="checkbox" :id="todo.id" :key="todo.id"
                    :checked="todo.checked"
                    @change="$emit('todo-check', todo.id)"
             />

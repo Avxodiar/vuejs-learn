@@ -6,10 +6,35 @@
         <FilterTodo  @filter="filterTodo"/>
         <AddTodo @add-todo="addTodo"/>
 
-        <p class="task" v-if="filter.length">
-            Поиск по запросу «<span>{{ filter }}</span>»: найдено {{ list.length }} {{ taskWord }}
-        </p>
-        <p class="task" v-else>Всего задач: {{ countTodo }} (выполнено {{ completed }}%)</p>
+        <div class="panel">
+            <p class="task" v-if="filter.length">
+                Поиск по запросу «<span>{{ filter }}</span>»: найдено {{ list.length }} {{ taskWord }}
+            </p>
+            <p class="task" v-else>Показано задач: {{ list.length }} из {{ countTodo }} </p>
+            <ul>
+                <li>
+                    <input type="radio" name="selector" id="selectorAll" value="all"
+                           v-model="selector" :checked="selector === 'all'">
+                    <label for="selectorAll">
+                        Все ({{ countTodo }})
+                    </label>
+                </li>
+                <li>
+                    <input type="radio" name="selector" id="selectorСhecked" value="checked"
+                           v-model="selector" :checked="selector === 'checked'">
+                    <label for="selectorСhecked">
+                        Выполненные ({{ countChecked }})
+                    </label>
+                </li>
+                <li>
+                    <input type="radio" name="selector" id="selectorUnchecked" value="unchecked"
+                           v-model="selector" :checked="selector === 'unchecked'">
+                    <label for="selectorUnchecked">
+                        Невыполненные ({{ countTodo - countChecked }})
+                    </label>
+                </li>
+            </ul>
+        </div>
 
         <ul class="list" v-if="list.length">
             <TodoItem :key="id"
@@ -23,6 +48,7 @@
                 @todo-check="checkTodo"
             />
         </ul>
+        <p class="no-todo" v-else>Нет задач для отображения</p>
     </div>
 </template>
 
@@ -35,11 +61,21 @@
 
     export default {
         name: "TodoList",
-        props: ['list', 'countTodo', 'filter'],
+        props: ['list', 'countTodo', 'countChecked', 'filter'],
+        data () {
+            return {
+                selector: 'all'
+            }
+        },
         components: {
             FilterTodo,
             AddTodo,
             TodoItem
+        },
+        watch: {
+            selector() {
+                this.$emit('select', this.selector);
+            }
         },
         methods: {
             upTodo(id) {
@@ -64,14 +100,6 @@
         computed: {
             taskWord() {
                 return numeralWord(this.list.length, 'задача','задачи','задач')
-            },
-
-            completed() {
-                if (this.countTodo === 0 ) {
-                    return 100;
-                }
-                let checked = this.list.reduce((sum, todo) => sum + todo.checked, 0);
-                return Math.round( 100 * checked / this.countTodo );
             }
         }
     }
@@ -86,10 +114,17 @@
         font-style: italic;
     }
 
-    .task {
-        padding-bottom: 0.7em;
+    .panel {
+        display: flex;
+        justify-content: space-between;
         border-bottom: 2px solid lightseagreen;
+        margin-bottom: 0.7em;
     }
+
+    .task {
+        margin: 0 0 0.5em;
+    }
+
     .task span {
         color: darkcyan;
         font-style: italic;
@@ -102,4 +137,30 @@
         list-style: none;
     }
 
+    .no-todo {
+        padding: 1em;
+        text-align: center;
+    }
+
+    .panel ul {
+        display: flex;
+        margin: 0;
+        padding: 0;
+    }
+    .panel li {
+        display: block;
+        list-style: none;
+        padding: 0.5em 0;
+    }
+    .panel li:last-child {
+        padding-right: 0;
+    }
+
+    .panel label {
+        padding: 0.5em 0.5em 0.5em 0;
+        cursor: pointer;
+    }
+    .panel label:hover {
+        color: #1565c0;
+    }
 </style>
