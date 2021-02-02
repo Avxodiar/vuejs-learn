@@ -1,4 +1,7 @@
 <template>
+    <h2>Todo List</h2>
+    <p class="note">Данные хранятся в памяти браузера! (LocalStorage)</p>
+
     <List
         :list="filteredList"
         :countTodo="todoList.length"
@@ -153,3 +156,13 @@
         }
     }
 </script>
+
+<style scoped>
+    .note {
+        font-size: 1em;
+        margin-bottom: 2em;
+        color: darkcyan;
+        font-weight: bold;
+        font-style: italic;
+    }
+</style>
