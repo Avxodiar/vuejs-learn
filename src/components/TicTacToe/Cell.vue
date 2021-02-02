@@ -15,13 +15,10 @@
         },
         computed: {
             label() {
-                return this.td;
-                /*
                 if (!this.td) {
                     return '';
                 }
-                return this.td > 1 ? 'X' : 'O'
-                 */
+                return this.td > 0 ? 'X' : 'O'
             }
         }
     }

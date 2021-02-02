@@ -20,7 +20,7 @@
         },
         methods: {
             clickRow(id) {
-                this.$emit('click-row', id, this.rowId);
+                this.$emit('click-row', this.rowId, id);
             }
         }
     }
