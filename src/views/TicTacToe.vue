@@ -8,7 +8,7 @@
             </div>
             <div class="control">
                 <div>
-                    <p> Сыграно: {{ games.count }} игр </p>
+                    <p>Сыграно: {{ games.count }} {{ gamesWord }}</p>
                     <p v-if="gameOver">
                         <span class="green" v-if="win.name === 'user'">Победа!</span>
                         <span class="red" v-else-if="win.name === 'computer'">Проигрыш</span>
@@ -57,6 +57,7 @@
 <script>
     import Row from  '@/components/TicTacToe/Row.vue'
     import {getTurn, checkWin} from '@/assets/tictactoe.js'
+    import {numeralWord} from '@/assets/function.js'
 
     export default {
         name: "TicTacToe",
@@ -115,6 +116,12 @@
                     percent =  Math.ceil(this.games.fail / this.games.count * 100);
                 }
                 return '('+ percent + '%)';
+            },
+            /**
+             * Исчисляемые формы слова "игр"
+             */
+            gamesWord() {
+                return numeralWord(this.games.count, 'игра', 'игры', 'игр');
             }
         },
         methods: {
