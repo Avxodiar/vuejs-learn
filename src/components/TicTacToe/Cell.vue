@@ -26,20 +26,22 @@
 
 <style scoped>
     td {
-        border: 1px solid gray;
+        border: 2px solid gray;
         background-color: white;
     }
+
     .cell {
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 5px;
         padding: 20px;
-        width: 100px;
-        height: 100px;
-        font-size: 5em;
+        width: 140px;
+        height: 140px;
+        font-size: 8em;
         cursor: pointer;
     }
+
     .cell:hover {
         background-color: lightgray;
     }

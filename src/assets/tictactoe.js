@@ -7,11 +7,11 @@ import {ChuckNorris} from './ChuckNorris.js'
  * @param difficulty - максимальный уровень сложности
  * @returns {{col: number, row: number}}
  */
-function getTurn(board, leftStep, difficulty = 1) {
+function getTurn(board, leftStep, difficulty) {
     let newId;
 
     // если первый ход компьютера (leftStep == 9), то всегда делаем случайных ход
-    if (difficulty && leftStep < 9) {
+    if (parseInt(difficulty) && leftStep < 9) {
         let Chuck = new ChuckNorris(board);
         newId = Chuck.getTurn();
     } else {

@@ -2,25 +2,15 @@
     <h2>Игра "Крестики-Нолики"</h2>
     <div class="game">
 
-        <fieldset>
-            <legend>Выберите сложность игры</legend>
-
-            <div>
-                <input type="radio" name="selectorEasy" id="selectorEasy"  value="0" v-model="difficulty" >
-                <label for="selectorEasy">Легкий</label>
-            </div>
-
-            <div>
-                <input type="radio" name="selectorHard" id="selectorHard"  value="1" v-model="difficulty" >
-                <label for="selectorHard">Чак Норрис (не проигрывает)</label>
-            </div>
-
-        </fieldset>
-
         <div class="panel">
             <div class="gamer">
                 Игрок {{ userStat }}
-                <span>{{ games.win }}</span>
+                <span :class="{
+                    'bg-green': games.win > games.fail,
+                    'bg-red': games.win < games.fail
+                }">
+                    {{ games.win }}
+                </span>
             </div>
             <div class="control">
                 <div>
@@ -36,18 +26,24 @@
                     class="btn"
                     @click="resetGame"
                     :class="{danger: gameOver}"
+                    :disabled="!gameOver"
                 >
                     Начать заново
                 </button>
             </div>
             <div class="gamer">
-                Компьютер {{ computerStat }}
-                <span>{{ games.fail }}</span>
+                {{ computerName }} {{ computerStat }}
+                <span :class="{
+                    'bg-green': games.win < games.fail,
+                    'bg-red': games.win > games.fail
+                }">
+                    {{ games.fail }}
+                </span>
             </div>
         </div>
 
         <table class="board"
-           :class="[crossLine, {
+               :class="[crossLine, {
                 'user-win': win.name === 'user',
                 'user-fail': win.name === 'computer',
                 'game-over': gameOver,
@@ -59,6 +55,19 @@
                 @click-row="clickCell"
             />
         </table>
+
+        <fieldset>
+            <legend>Выберите сложность игры</legend>
+            <div>
+                <input type="radio" name="selectorEasy" id="selectorEasy" value="0" v-model="difficulty">
+                <label for="selectorEasy">Легкий</label>
+            </div>
+            <div>
+                <input type="radio" name="selectorHard" id="selectorHard" value="1" v-model="difficulty">
+                <label for="selectorHard">Чак Норрис (не проигрывает)</label>
+            </div>
+        </fieldset>
+
     </div>
 
     <p>Правила игры:</p>
@@ -71,7 +80,7 @@
 
 
 <script>
-    import Row from  '@/components/TicTacToe/Row.vue'
+    import Row from '@/components/TicTacToe/Row.vue'
     import {getTurn, checkWin} from '@/assets/tictactoe.js'
     import {numeralWord} from '@/assets/function.js'
 
@@ -103,11 +112,12 @@
         },
         watch: {
             difficulty() {
+                this.difficulty = parseInt(this.difficulty);
                 this.games.count = 0;
                 this.games.win = 0;
                 this.games.fail = 0;
                 this.resetGame();
-            }
+            },
         },
         computed: {
             /**
@@ -128,9 +138,9 @@
             userStat() {
                 let percent = 0;
                 if (this.games.count && this.games.win) {
-                    percent =  Math.ceil(this.games.win / this.games.count * 100);
+                    percent = Math.ceil(this.games.win / this.games.count * 100);
                 }
-                return '('+ percent + '%)';
+                return '(' + percent + '%)';
             },
             /**
              * Процент побед компьютера
@@ -138,23 +148,30 @@
             computerStat() {
                 let percent = 0;
                 if (this.games.count && this.games.fail) {
-                    percent =  Math.ceil(this.games.fail / this.games.count * 100);
+                    percent = Math.ceil(this.games.fail / this.games.count * 100);
                 }
-                return '('+ percent + '%)';
+                return '(' + percent + '%)';
             },
             /**
              * Исчисляемые формы слова "игр"
              */
             gamesWord() {
                 return numeralWord(this.games.count, 'игра', 'игры', 'игр');
+            },
+            /**
+             * Имя компьютера в зависимости от сложности
+             */
+            computerName() {
+                return (this.difficulty) ? 'Чак Норрис' : 'Компьютер';
             }
+
         },
         methods: {
             /**
              * Перезапуск игры
              */
             resetGame() {
-                this.win = { type: '', id: 0, name: '' };
+                this.win = {type: '', id: 0, name: ''};
                 this.leftStep = 9;
                 this.board[0].fill(0, 0, 3);
                 this.board[1].fill(0, 0, 3);
@@ -171,7 +188,7 @@
              * @param  {int} col - номер ячейки
              */
             clickCell(row, col) {
-                if( !this.gameOver && this.board[row][col] === 0) {
+                if (!this.gameOver && this.board[row][col] === 0) {
                     this.board[row][col]++;
                     this.step();
 
@@ -203,7 +220,7 @@
                 }
 
                 // если игра закончилась, сохраняем результаты игры
-                if(this.gameOver) {
+                if (this.gameOver) {
                     this.games.count++;
                     if (this.win.name === 'user') {
                         this.games.win++;
@@ -217,7 +234,8 @@
     }
 </script>
 
-<style>
+
+<style scoped>
     .game {
         width: 600px;
         margin: 0 auto 3em;
@@ -227,7 +245,7 @@
         display: flex;
         justify-content: space-evenly;
         padding: 1em;
-        margin-bottom: 3em;
+        margin: 3em 0 0;
         border-radius: 0.5em;
         border-width: thin;
     }
@@ -239,12 +257,14 @@
         border-right: 1px solid gray;
         border-radius: 0.5em;
     }
+
     .game fieldset [type=radio],
     .game fieldset label {
         padding: 0.5em;
         font-size: 1.1em;
         cursor: pointer;
     }
+
     .game fieldset label:hover {
         text-shadow: 0 0 2px grey;
     }
@@ -252,7 +272,7 @@
     .game .panel {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 1em;
+        margin-bottom: 2em;
     }
 
     .game .gamer {
@@ -261,6 +281,7 @@
         width: 25%;
         text-align: center;
     }
+
     .game .gamer * {
         text-align: center;
     }
@@ -268,12 +289,18 @@
     .game .gamer span {
         margin-top: 0.5em;
         padding: 0.2em;
-        background-color: lightgreen;
         font-weight: bold;
         font-size: 2em;
+        background-color: #e6e6fa;
+        outline: 2px solid gray;
+    }
+
+    .game .gamer span.bg-green {
+        background-color: lightgreen;
         outline: 2px solid #1b5e20;
     }
-    .game .gamer:last-child span {
+
+    .game .gamer span.bg-red {
         background-color: lightpink;
         outline: 2px solid #880e4f;
     }
@@ -283,24 +310,30 @@
         flex-direction: column;
         justify-content: center;
     }
+
     .game .control * {
         display: block;
         align-self: center;
         width: 100%;
         margin-right: 0;
+        font-size: 1em;
     }
+
     .game .control:first-child {
         font-weight: bold;
     }
+
     .game .control p {
         margin-top: 0;
         text-align: center;
         font-weight: bold;
     }
+
     .game .control p span {
+        padding: 0.5em;
+        font-size: 1.5em;
         border-top: 1px solid gray;
         border-bottom: 1px solid gray;
-        padding: 1em;
     }
 
     .game .control p span.green {
@@ -310,20 +343,25 @@
     .game .control p span.red {
         color: red;
     }
+</style>
 
+<style>
     .game .board {
         position: relative;
         margin: auto;
         border-collapse: collapse;
     }
+
     .game .game-over td,
     .game .game-over .cell:hover {
         background-color: lightgrey;
     }
+
     .game .user-win td,
     .game .user-win .cell:hover {
         background-color: lightgreen;
     }
+
     .game .user-fail td,
     .game .user-fail .cell:hover {
         background-color: lightpink;
@@ -336,19 +374,22 @@
         position: absolute;
         left: 0;
         width: calc(100% + 1px);
-        height: 8px;
+        height: 12px;
         background: darkgray;
         z-index: 1;
     }
+
     .game .board.line0::before {
-        top: calc( (100% / 6) - 6px);
+        top: calc((100% / 6) - 10px);
 
     }
+
     .game .board.line1::before {
-        top: calc( (100% / 2) - 6px);
+        top: calc((100% / 2) - 10px);
     }
+
     .game .board.line2::before {
-        top: calc( (100% / 6 * 5) - 6px);
+        top: calc((100% / 6 * 5) - 9px);
     }
 
     .game .board.row0::before,
@@ -357,20 +398,23 @@
         content: '';
         position: absolute;
         top: 0;
-        width: 9px;
-        height: calc(100% + 1px);
+        width: 12px;
+        height: 100%;
         background: darkgray;
         z-index: 1;
     }
+
     .game .board.row0::before {
-        left: calc( (100% / 6) - 4px);
+        left: calc((100% / 6) - 5px);
 
     }
+
     .game .board.row1::before {
-        left: calc( (100% / 2) - 4px);
+        left: calc((100% / 2) - 6px);
     }
+
     .game .board.row2::before {
-        right: calc( (100% / 6) - 6px);
+        right: calc((100% / 6) - 6px);
     }
 
     .game .board.diag0::before,
@@ -379,14 +423,16 @@
         position: absolute;
         top: -16%;
         left: 49%;
-        width: 10px;
+        width: 14px;
         height: 133%;
         background: darkgray;
         z-index: 1;
     }
+
     .game .board.diag0::before {
         transform: rotate(-45deg);
     }
+
     .game .board.diag1::before {
         transform: rotate(45deg);
     }
