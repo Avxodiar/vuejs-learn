@@ -1,20 +1,33 @@
 <template>
     <h2>Игра "Крестики-Нолики"</h2>
     <div class="game">
-        <div class="control">
-            <p v-if="gameOver">
-                <span v-if="win.name === 'user'">Победа!</span>
-                <span v-else-if="win.name === 'computer'">Проигрыш</span>
-                <span v-else> Ничья </span>
-            </p>
-            <p v-else>Ход игрока</p>
-            <button
-                class="btn"
-                @click="resetGame"
-                :class="{danger: gameOver}"
-            >
-                Начать заново
-            </button>
+        <div class="panel">
+            <div class="gamer">
+                Игрок {{ userStat }}
+                <span>{{ games.win }}</span>
+            </div>
+            <div class="control">
+                <div>
+                    <p> Сыграно: {{ games.count }} игр </p>
+                    <p v-if="gameOver">
+                        <span class="green" v-if="win.name === 'user'">Победа!</span>
+                        <span class="red" v-else-if="win.name === 'computer'">Проигрыш</span>
+                        <span v-else> Ничья </span>
+                    </p>
+                    <p v-else><span>Ход игрока</span></p>
+                </div>
+                <button
+                    class="btn"
+                    @click="resetGame"
+                    :class="{danger: gameOver}"
+                >
+                    Начать заново
+                </button>
+            </div>
+            <div class="gamer">
+                Компьютер {{ computerStat }}
+                <span>{{ games.fail }}</span>
+            </div>
         </div>
 
         <table class="board"
@@ -45,6 +58,11 @@
         },
         data() {
             return {
+                games: {
+                    count: 0,
+                    win: 0,
+                    fail: 0
+                },
                 board: [
                     [0, 0, 0],
                     [0, 0, 0],
@@ -65,8 +83,31 @@
             gameOver() {
                 return !(this.win.name === '' && this.leftStep);
             },
+            /**
+             * Класс для отображения перечеркнутой линии при победе или проигрыше
+             */
             crossLine() {
                 return (this.gameOver) ? this.win.type + this.win.id : '';
+            },
+            /**
+             * Процент побед игрока
+             */
+            userStat() {
+                let percent = 0;
+                if (this.games.count && this.games.win) {
+                    percent =  Math.ceil(this.games.win / this.games.count * 100);
+                }
+                return '('+ percent + '%)';
+            },
+            /**
+             * Процент побед компьютера
+             */
+            computerStat() {
+                let percent = 0;
+                if (this.games.count && this.games.fail) {
+                    percent =  Math.ceil(this.games.fail / this.games.count * 100);
+                }
+                return '('+ percent + '%)';
             }
         },
         methods: {
@@ -116,6 +157,16 @@
                     this.win.type = res.type;
                     this.win.id = res.id;
                 }
+
+                if(this.gameOver) {
+                    this.games.count++;
+                    if (this.win.name === 'user') {
+                        this.games.win++;
+                    }
+                    if (this.win.name === 'computer') {
+                        this.games.fail++;
+                    }
+                }
             }
         }
     }
@@ -126,10 +177,72 @@
         width: 600px;
         margin: 0 auto 3em;
     }
+
+    .game .panel {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1em;
+    }
+
+    .game .gamer {
+        display: flex;
+        flex-direction: column;
+        width: 25%;
+        text-align: center;
+    }
+    .game .gamer * {
+        text-align: center;
+    }
+
+    .game .gamer span {
+        margin-top: 0.5em;
+        padding: 0.2em;
+        background-color: lightgreen;
+        font-weight: bold;
+        font-size: 2em;
+        outline: 2px solid #1b5e20;
+    }
+    .game .gamer:last-child span {
+        background-color: lightpink;
+        outline: 2px solid #880e4f;
+    }
+
+    .game .control {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .game .control * {
+        display: block;
+        align-self: center;
+        width: 100%;
+        margin-right: 0;
+    }
+    .game .control:first-child {
+        font-weight: bold;
+    }
+    .game .control p {
+        margin-top: 0;
+        text-align: center;
+        font-weight: bold;
+    }
+    .game .control p span {
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        padding: 1em;
+    }
+
+    .game .control p span.green {
+        color: green;
+    }
+
+    .game .control p span.red {
+        color: red;
+    }
+
     .game .board {
         position: relative;
         margin: auto;
-        border: 1px solid gray;
         border-collapse: collapse;
     }
     .game .game-over td,
@@ -144,18 +257,7 @@
     .game .user-fail .cell:hover {
     background-color: lightpink;
     }
-    .game .control {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-bottom: 1em;
-    }
-    .game .control * {
-        align-self: center;
-    }
-    .game .control:first-child {
-        font-weight: bold;
-    }
+
     .game .board.line0::before,
     .game .board.line1::before,
     .game .board.line2::before {
