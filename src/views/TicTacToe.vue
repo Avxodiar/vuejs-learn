@@ -1,8 +1,11 @@
 <template>
     <h2>Игра "Крестики-Нолики"</h2>
-    <div>
+    <div class="game">
         <div class="control">
-            <p v-if="gameOver">GAME OVER</p>
+            <p v-if="gameOver">
+                <span v-if="winner"> {{ winner }} WIN!</span>
+                <span v-else> Ничья </span>
+            </p>
             <p v-else>Ход игрока</p>
             <button
                 class="btn"
@@ -13,7 +16,9 @@
             </button>
         </div>
 
-        <table class="board">
+        <table class="board"
+               :class="{'user-win': winner === 'user', 'user-fail': winner === 'computer', 'game-over': gameOver}"
+        >
             <Row
                 :key="idx"
                 v-for="(row,idx) in board"
@@ -27,7 +32,7 @@
 
 <script>
     import Row from  '@/components/TicTacToe/Row.vue'
-    import {getTurn} from '@/assets/tictactoe.js'
+    import {getTurn, checkWin} from '@/assets/tictactoe.js'
 
     export default {
         name: "TicTacToe",
@@ -41,7 +46,8 @@
                     [0, 0, 0],
                     [0, 0, 0]
                 ],
-                leftStep: 9
+                leftStep: 9,
+                winner: ''
             }
         },
         computed: {
@@ -49,7 +55,7 @@
              * Флаг завершения игры
              */
             gameOver() {
-                return !this.leftStep;
+                return !(this.winner === '' && this.leftStep);
             }
         },
         methods: {
@@ -57,6 +63,7 @@
              * Перезапуск игры
              */
             resetGame() {
+                this.winner = '';
                 this.leftStep = 9;
                 this.board[0].fill(0, 0, 3);
                 this.board[1].fill(0, 0, 3);
@@ -68,45 +75,74 @@
              * @param  {int} col - номер ячейки
              */
             clickCell(row, col) {
-                if( this.board[row][col] === 0) {
+                if( !this.gameOver && this.board[row][col] === 0) {
                     this.board[row][col]++;
-                    this.leftStep--;
-                    // check User Win
+                    this.step();
+
                     if (!this.gameOver) {
                         this.computerTurn();
-                        this.leftStep--;
-                        // check Computer Win
                     }
                 }
             },
+            /**
+             * Ход компьютера
+             */
             computerTurn() {
                 let turn = getTurn(this.board, this.leftStep);
                 this.board[turn.row][turn.col]--;
+                this.step();
+            },
+            /**
+             * Общие действия хода
+             */
+            step() {
+                this.leftStep--;
+                // Проверка победы
+                let res = checkWin(this.board);
+                console.log(res);
+                if (res.win) {
+                    // Установка победителя
+                    this.winner = res.winner > 0 ? 'user' : 'computer';
+                    // line, row, diag
+                    // id
+                }
             }
         }
     }
 </script>
 
-<style scoped>
-    div {
+<style>
+    .game {
         width: 600px;
         margin: 0 auto 3em;
     }
-    .board {
+    .game .board {
         margin: auto;
         border: 1px solid gray;
         border-collapse: collapse;
     }
-    .control {
+    .game .game-over td,
+    .game .game-over .cell:hover {
+        background-color: lightgrey;
+    }
+    .game .user-win td,
+    .game .user-win .cell:hover {
+    background-color: lightgreen;
+    }
+    .game .user-fail td,
+    .game .user-fail .cell:hover {
+    background-color: lightpink;
+    }
+    .game .control {
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin-bottom: 1em;
     }
-    .control * {
+    .game .control * {
         align-self: center;
     }
-    .control:first-child {
+    .game .control:first-child {
         font-weight: bold;
     }
 </style>
