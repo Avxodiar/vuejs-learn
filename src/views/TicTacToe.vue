@@ -3,7 +3,8 @@
     <div class="game">
         <div class="control">
             <p v-if="gameOver">
-                <span v-if="winner"> {{ winner }} WIN!</span>
+                <span v-if="win.name === 'user'">Победа!</span>
+                <span v-else-if="win.name === 'computer'">Проигрыш</span>
                 <span v-else> Ничья </span>
             </p>
             <p v-else>Ход игрока</p>
@@ -17,8 +18,11 @@
         </div>
 
         <table class="board"
-               :class="{'user-win': winner === 'user', 'user-fail': winner === 'computer', 'game-over': gameOver}"
-        >
+           :class="[crossLine, {
+                'user-win': win.name === 'user',
+                'user-fail': win.name === 'computer',
+                'game-over': gameOver,
+           }]">
             <Row
                 :key="idx"
                 v-for="(row,idx) in board"
@@ -47,7 +51,11 @@
                     [0, 0, 0]
                 ],
                 leftStep: 9,
-                winner: ''
+                win: {
+                    type: '',
+                    id: 0,
+                    name: ''
+                }
             }
         },
         computed: {
@@ -55,7 +63,10 @@
              * Флаг завершения игры
              */
             gameOver() {
-                return !(this.winner === '' && this.leftStep);
+                return !(this.win.name === '' && this.leftStep);
+            },
+            crossLine() {
+                return (this.gameOver) ? this.win.type + this.win.id : '';
             }
         },
         methods: {
@@ -63,7 +74,7 @@
              * Перезапуск игры
              */
             resetGame() {
-                this.winner = '';
+                this.win = { type: '', id: 0, name: '' };
                 this.leftStep = 9;
                 this.board[0].fill(0, 0, 3);
                 this.board[1].fill(0, 0, 3);
@@ -99,12 +110,11 @@
                 this.leftStep--;
                 // Проверка победы
                 let res = checkWin(this.board);
-                console.log(res);
                 if (res.win) {
                     // Установка победителя
-                    this.winner = res.winner > 0 ? 'user' : 'computer';
-                    // line, row, diag
-                    // id
+                    this.win.name = res.winner > 0 ? 'user' : 'computer';
+                    this.win.type = res.type;
+                    this.win.id = res.id;
                 }
             }
         }
@@ -117,6 +127,7 @@
         margin: 0 auto 3em;
     }
     .game .board {
+        position: relative;
         margin: auto;
         border: 1px solid gray;
         border-collapse: collapse;
@@ -145,4 +156,66 @@
     .game .control:first-child {
         font-weight: bold;
     }
+    .game .board.line0::before,
+    .game .board.line1::before,
+    .game .board.line2::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: calc(100% + 1px);
+        height: 8px;
+        background: darkgray;
+        z-index: 1;
+    }
+    .game .board.line0::before {
+        top: calc( (100% / 6) - 6px);
+
+    }
+    .game .board.line1::before {
+        top: calc( (100% / 2) - 6px);
+    }
+    .game .board.line2::before {
+        top: calc( (100% / 6 * 5) - 6px);
+    }
+
+    .game .board.row0::before,
+    .game .board.row1::before,
+    .game .board.row2::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 9px;
+        height: calc(100% + 1px);
+        background: darkgray;
+        z-index: 1;
+    }
+    .game .board.row0::before {
+        left: calc( (100% / 6) - 4px);
+
+    }
+    .game .board.row1::before {
+        left: calc( (100% / 2) - 4px);
+    }
+    .game .board.row2::before {
+        right: calc( (100% / 6) - 6px);
+    }
+
+    .game .board.diag0::before,
+    .game .board.diag1::before {
+        content: '';
+        position: absolute;
+        top: -16%;
+        left: 49%;
+        width: 10px;
+        height: 133%;
+        background: darkgray;
+        z-index: 1;
+    }
+    .game .board.diag0::before {
+        transform: rotate(-45deg);
+    }
+    .game .board.diag1::before {
+        transform: rotate(45deg);
+    }
+
 </style>
