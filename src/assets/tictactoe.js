@@ -1,27 +1,50 @@
+import {ChuckNorris} from './ChuckNorris.js'
+
 /**
  * Определение хода компьютера
  * @param {array} board - таблица с ходами
  * @param {int} leftStep - осталось ходов
+ * @param difficulty - максимальный уровень сложности
+ * @returns {{col: number, row: number}}
  */
-function getTurn(board, leftStep) {
-    // случайный шаг (простой уровень сложности)
-    // номер свободной ячейки
-    let num = randomInteger(1, leftStep);
-    // сливаем таблицу в одномерный массив для упрощения
-    const flatBoard = board[0].concat(board[1],board[2]);
-    //находим num-ую не заполненную ячейку
-    let newId = flatBoard.findIndex(item => {
-        if (item === 0) {
-            num--;
-        }
-        return num === 0;
-    });
+function getTurn(board, leftStep, difficulty = 1) {
+    let newId;
+
+    // если первый ход компьютера (leftStep == 9), то всегда делаем случайных ход
+    if (difficulty && leftStep < 9) {
+        let Chuck = new ChuckNorris(board);
+        newId = Chuck.getTurn();
+    } else {
+        newId = randomTurn(board, leftStep);
+    }
 
     // преобразуем в координаты
     let x = Math.floor(newId / 3);
     let y = newId % 3;
 
-    return {row:x, col:y};
+    return {row: x, col: y};
+}
+
+/**
+ * Случайный шаг (легкий уровень сложности)
+ * @param {array} board - таблица с ходами
+ * @param {int} leftStep - осталось ходов
+ * @returns {number} - id ячейки
+ */
+function randomTurn(board, leftStep) {
+
+    // номер свободной ячейки
+    let num = randomInteger(1, leftStep);
+    // сливаем таблицу в одномерный массив для упрощения
+    const flatBoard = board[0].concat(board[1], board[2]);
+
+    //находим num-ую не заполненную ячейку
+    return flatBoard.findIndex(item => {
+        if (item === 0) {
+            num--;
+        }
+        return num === 0;
+    });
 }
 
 /**
@@ -30,18 +53,17 @@ function getTurn(board, leftStep) {
  * @returns {{winner: number, id: number, type: string, win: boolean}}
  */
 function checkWin(board) {
-   let result = {
+    let result = {
         win: false,
         winner: 0,
         type: '',
         id: 0
-   };
+    };
 
     // Проверяем наличие одинаковых символов
     // по строкам, столбцам и диагоналям
     const types = ['line', 'row', 'diag'];
-    for (let i = 0; i < types.length; i++)
-    {
+    for (let i = 0; i < types.length; i++) {
         let res = check(types[i], board);
         if (isWin(res.winner)) {
             result.win = true;
@@ -50,7 +72,7 @@ function checkWin(board) {
             result.winner = res.winner;
         }
 
-        if(result.win) {
+        if (result.win) {
             break;
         }
     }
@@ -89,9 +111,9 @@ function checkLines(board) {
     let idx = 0;
     let win = 0;
 
-    for (var i = 0; i < board.length; i++) {
+    for (let i = 0; i < board.length; i++) {
         let res = sumArray(board[i]);
-        if(isWin(res)) {
+        if (isWin(res)) {
             idx = i;
             win = res;
             break;

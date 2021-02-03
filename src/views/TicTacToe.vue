@@ -1,6 +1,22 @@
 <template>
     <h2>Игра "Крестики-Нолики"</h2>
     <div class="game">
+
+        <fieldset>
+            <legend>Выберите сложность игры</legend>
+
+            <div>
+                <input type="radio" name="selectorEasy" id="selectorEasy"  value="0" v-model="difficulty" >
+                <label for="selectorEasy">Легкий</label>
+            </div>
+
+            <div>
+                <input type="radio" name="selectorHard" id="selectorHard"  value="1" v-model="difficulty" >
+                <label for="selectorHard">Чак Норрис (не проигрывает)</label>
+            </div>
+
+        </fieldset>
+
         <div class="panel">
             <div class="gamer">
                 Игрок {{ userStat }}
@@ -66,6 +82,7 @@
         },
         data() {
             return {
+                difficulty: 0,
                 games: {
                     count: 0,
                     win: 0,
@@ -82,6 +99,14 @@
                     id: 0,
                     name: ''
                 }
+            }
+        },
+        watch: {
+            difficulty() {
+                this.games.count = 0;
+                this.games.win = 0;
+                this.games.fail = 0;
+                this.resetGame();
             }
         },
         computed: {
@@ -159,7 +184,7 @@
              * Ход компьютера
              */
             computerTurn() {
-                let turn = getTurn(this.board, this.leftStep);
+                let turn = getTurn(this.board, this.leftStep, this.difficulty);
                 this.board[turn.row][turn.col]--;
                 this.step();
             },
@@ -177,6 +202,7 @@
                     this.win.id = res.id;
                 }
 
+                // если игра закончилась, сохраняем результаты игры
                 if(this.gameOver) {
                     this.games.count++;
                     if (this.win.name === 'user') {
@@ -195,6 +221,32 @@
     .game {
         width: 600px;
         margin: 0 auto 3em;
+    }
+
+    .game fieldset {
+        display: flex;
+        justify-content: space-evenly;
+        padding: 1em;
+        margin-bottom: 3em;
+        border-radius: 0.5em;
+        border-width: thin;
+    }
+
+    .game fieldset legend {
+        padding: 0.3em 0.8em;
+        font-weight: bold;
+        border-left: 1px solid gray;
+        border-right: 1px solid gray;
+        border-radius: 0.5em;
+    }
+    .game fieldset [type=radio],
+    .game fieldset label {
+        padding: 0.5em;
+        font-size: 1.1em;
+        cursor: pointer;
+    }
+    .game fieldset label:hover {
+        text-shadow: 0 0 2px grey;
     }
 
     .game .panel {
@@ -270,11 +322,11 @@
     }
     .game .user-win td,
     .game .user-win .cell:hover {
-    background-color: lightgreen;
+        background-color: lightgreen;
     }
     .game .user-fail td,
     .game .user-fail .cell:hover {
-    background-color: lightpink;
+        background-color: lightpink;
     }
 
     .game .board.line0::before,
