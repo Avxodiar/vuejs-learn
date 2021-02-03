@@ -1,4 +1,9 @@
-#Учебный проект 'Todo List' на Vue.js
+#Учебный проект по изученнию Vue.js
+
+Содержит в себе 2 "подпроекта", реализованных с использованием компонентов и маршрутизации,  отображаемых на отдельных страницах:
+- Список дел (Todo List)
+- Игра "Крестики-Нолики"
+
 
 ## Установка проекта
 ```
@@ -32,6 +37,7 @@ npm install -g serve
 # https://cli.vuejs.org/guide/deployment.html#routing-with-history-pushstate
 serve -s dist
 ```
+
 ### Публикация на сервер
 Смотрите [Руководства для платформ](https://cli.vuejs.org/guide/deployment.html#platform-guides).
 
