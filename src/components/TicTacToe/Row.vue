@@ -14,7 +14,16 @@
 
     export default {
         name: "Row",
-        props: ['row', 'rowId'],
+        props: {
+            row: {
+                type: Array,
+                required: true
+            },
+            rowId: {
+                type: Number,
+                required: true
+            }
+        },
         components: {
             Cell
         },

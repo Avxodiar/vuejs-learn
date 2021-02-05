@@ -21,7 +21,21 @@
 
     export default {
         name: "TodoItem",
-        props: ['todo', 'id', 'maxId', 'search'],
+        props: {
+            todo: {
+                type: Array,
+                required: true
+            },
+            id: {
+                type: Number,
+                required: true
+            },
+            maxId: {
+                type: Number,
+                required: true
+            },
+            search: String
+        },
         computed: {
             todoTitle() {
                 return ucFirst(this.todo.title)

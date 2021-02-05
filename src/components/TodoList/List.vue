@@ -58,7 +58,27 @@
 
     export default {
         name: "List",
-        props: ['list', 'countTodo', 'countChecked', 'filter'],
+        props: {
+            list: {
+                type: Array,
+                required: true
+            },
+            countTodo: {
+                type: Number,
+                required: true,
+                validator: function (value) {
+                    return value < 0 ? 0 : value;
+                }
+            },
+            countChecked: {
+                type: Number,
+                required: true,
+                validator: function (value) {
+                    return value < 0 ? 0 : value;
+                }
+            },
+            filter: String
+        },
         data () {
             return {
                 selector: 'all'

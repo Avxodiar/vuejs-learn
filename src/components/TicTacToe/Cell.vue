@@ -10,8 +10,14 @@
     export default {
         name: "Cell",
         props: {
-            id: Number,
-            td: Number
+            id: {
+                type: Number,
+                required: true
+            },
+            td: {
+                type: Number,
+                required: true
+            }
         },
         computed: {
             label() {
