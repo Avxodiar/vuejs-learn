@@ -2,14 +2,14 @@
     <h2 class="visually-hidden">Главная</h2>
 
     <nav>
-        <router-link to="/todo-list">
+        <router-link :to="{ name: 'TodoList' }">
             <figure>
                 <img src="../assets/todo-list.jpg" alt="Список дел" height="200" width="300"/>
                 <figcaption>Список дел</figcaption>
             </figure>
         </router-link>
 
-        <router-link to="/game">
+        <router-link :to="{ name: 'TicTacToe' }">
             <figure>
                 <img src="../assets/tic-tak-toe.jpg" alt="Игра Крестики-Нолики" height="200" width="300"/>
                 <figcaption>Крестики-Нолики</figcaption>
